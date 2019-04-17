@@ -1,4 +1,4 @@
-#
+# coding: utf-8
 # @lc app=leetcode id=95 lang=python
 #
 # [95] Unique Binary Search Trees II
@@ -44,11 +44,29 @@
 #         self.left = None
 #         self.right = None
 
+
 class Solution(object):
     def generateTrees(self, n):
         """
         :type n: int
         :rtype: List[TreeNode]
         """
-        
+        return self.Tree(1,n)
+    
+    def Tree(self, start, end):
+        if start > end:
+            return [None]
+        result = []
+        for i in xrange(start, end+1):
+            leftTree = self.Tree(start, i-1)
+            rightTree = self.Tree(i+1, end)
+            for l in leftTree:
+                for r in rightTree:
+                    root = TreeNode(i)
+                    root.left = l
+                    root.right = r
+                    result.append(root)
+        return result
 
+if __name__ == '__main__':
+    print Solution().generateTrees(0)
