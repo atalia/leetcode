@@ -1,28 +1,28 @@
 # coding:utf-8
 
-
 class Solution(object):
-    def numDecodings(self, s):
+    def addBinary(self, a, b):
         """
-        :type s: str
-        :rtype: int
+        :type a: str
+        :type b: str
+        :rtype: str
         """
-        length = len(s) + 1
-        dp = [0 for i in range(length)]
-        dp[0] = 1
-        dp[1] = 1 if s[0] != '0' else 0
-        for i in xrange(2, length):
-            if 10 <= int(s[i-2:i]) <= 26:
-                dp[i] = dp[i-2]
-            if s[i-1] != '0':
-                dp[i] += dp[i-1]
-        return dp[length-1]
+        a = a if len(a) > len(b) else '0' * (len(b)-len(a)) + a
+        b = b if len(b) > len(a) else '0' * (len(a)-len(b)) + b
+        result = ['0' for i in xrange(len(a) + 1)]
+        bit = 0
+        for i in xrange(len(a)-1, -1, -1):
+            ai = 1 if a[i] == '1' else 0
+            bi = 1 if b[i] == '1' else 0
+            ai = ai + bi + bit
+            if ai >= 2:
+                result[i] = '0' if ai == 2 else '1'
+                bit = 1
+            else:
+                result[i] = '1' if ai == 1 else '0'
+                bit = 1
+        result[0] = '1' if bit == 1 else '0'
+        return ''.join(result)
 
 if __name__ == '__main__':
-    #print Solution().numDecodings('12')
-    #print Solution().numDecodings('226')
-    #print Solution().numDecodings('10')
-    #print Solution().numDecodings('0')
-    #print Solution().numDecodings('100')
-    #print Solution().numDecodings('110')
-    #print Solution().numDecodings('4085393587263438197362839792651187379538211951318577884164713291143976212416731331985661435443671959')
+    print Solution().addBinary('1010','1011')
