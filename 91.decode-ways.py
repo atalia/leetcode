@@ -47,23 +47,5 @@ class Solution(object):
         :type s: str
         :rtype: int
         """
-        if not hasattr(self, 'dp'):
-            self.dp = [-1 for i in range(0, len(s)+1)]
-            self.dp[0] = 0
-        if len(s) == 1:
-            if s == '0':
-                self.dp[1] = 0
-            else:
-                self.dp[1] = 1
-        if self.dp[len(s)] != -1:
-            return self.dp[len(s)]
-        if len(s) > 1 and s[-1] == '0':
-            self.dp[len(s)] = self.dp[len(s)-1]
-        if 1 <= int(s[-1]) <= 6 and 1 <= int(s[-2]) <= 2:
-            self.dp[len(s)] = self.numDecodings(s[:-2]) + 2
-        else:
-            self.dp[len(s)]=self.numDecodings(s[:-2]) + self.numDecodings(s[-2:])
-        return self.dp[len(s)]
+        return 
 
-if __name__ == '__main__':
-    print Solution().numDecodings('01')

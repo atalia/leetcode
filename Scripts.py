@@ -2,26 +2,27 @@
 
 
 class Solution(object):
-    def numSquares(self, n):
+    def numDecodings(self, s):
         """
-        :type n: int
+        :type s: str
         :rtype: int
         """
-        from math import sqrt
-        root = int(sqrt(n)) + 1
-        if not hasattr(self, 'dp'):
-            self.dp = [i for i in xrange(n+1)]
-            for i in range(1, root):
-                self.dp[i*i] = 1
-        if self.dp[n] == 1:
+        nums = s.split('0')
+        result = 1
+        for num in nums:
+            result *= self.deocding(num)
+        return result
+
+    def deocding(self, s):
+        if s == '':
             return 1
-        for i in xrange(1, n+1):
-            for j in xrange(1, root):
-                if i - j * j < 0:
-                    break
-                self.dp[i] = min(self.dp[i-j*j]+1, self.dp[i])
-        return self.dp[n]
+        if len(s) == 1:
+            return 1
+        if 1 <= int(s[0]) <=2 and 1 <= int(s[1]) <= 6:
+            return self.deocding(s[2:]) * 2
+        else:
+            return self.deocding(s[2:]) * 1
 
 if __name__ == '__main__':
     S = Solution()
-    print S.numSquares(1040)
+    print S.numDecodings('226')
