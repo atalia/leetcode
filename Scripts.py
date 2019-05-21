@@ -1,29 +1,36 @@
 # coding:utf-8
 
 class Solution(object):
-    def addBinary(self, a, b):
+    def canFinish(self, numCourses, prerequisites):
         """
-        :type a: str
-        :type b: str
-        :rtype: str
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: bool
         """
-        a = a if len(a) > len(b) else '0' * (len(b)-len(a)) + a
-        b = b if len(b) > len(a) else '0' * (len(a)-len(b)) + b
-        result = ['0' for i in xrange(len(a) + 1)]
-        bit = 0
-        for i in xrange(len(a)-1, -1, -1):
-            ai = 1 if a[i] == '1' else 0
-            bi = 1 if b[i] == '1' else 0
-            ai = ai + bi + bit
-            if ai >= 2:
-                result[i+1] = '0' if ai == 2 else '1'
-                bit = 1
-            else:
-                result[i+1] = '1' if ai == 1 else '0'
-                bit = 0
-        result[0] = '1' if bit == 1 else '0'
-        s =  ''.join(result)
-        return s if s[0] == '1' else s[1:]
+        self.visited = [0 for i in range(numCourses)]
+        self.courses = [[0 for i in range(numCourses)] for j in range(numCourses)]
+        self.flag = True
+        for prerequisite in prerequisites:
+            i, j = prerequisite
+            self.courses[i][j] = 1
+        for i in range(numCourses):
+            self.dfs(i)
+        return self.flag
+
+    def dfs(self, s):
+        if self.visited[s] == -1:
+            return
+        self.visited[s] = 1
+        for i in range(len(self.visited)):
+            if self.courses[s][i]:
+                if not self.visited[i]:
+                    self.dfs(i)
+                elif self.visited[i] == 1:
+                    self.flag = False
+                    return
+        self.visited[s] = -1
 
 if __name__ == '__main__':
-    print Solution().addBinary('1010','1010')
+    numCourses = 4
+    prerequisites = [[1,0],[2,0],[2,1],[0,1]]
+    print Solution().canFinish(numCourses, prerequisites)
