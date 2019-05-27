@@ -1,26 +1,30 @@
 # coding:utf-8
 
 class Solution(object):
-    def sortColors(self, nums):
+    def countBits(self, num):
         """
-        :type nums: List[int]
-        :rtype: None Do not return anything, modify nums in-place instead.
+        :type num: int
+        :rtype: List[int]
         """
-        cur_position = 0
-        zero = 0
-        two = len(nums) - 1
-        while cur_position < two:
-            print cur_position
-            if nums[cur_position] == 0:
-                nums[zero], nums[cur_position] = nums[cur_position] , nums[zero]
-                zero += 1
-            elif nums[cur_position] == 2:
-                nums[two], nums[cur_position] = nums[cur_position], nums[two]
-                two -= 1
-            cur_position += 1
-        return nums
+        self.result = [0 for i in range(num + 1)]
+        self.cn = [0 for i in range(num + 1)]
+        sn = 0
+        for i in range(1, num + 1):
+            if i & (i - 1) == 0:
+                sn = i
+                self.cn[i] = sn
+                self.result[i] = 1
+            else:
+                self.cn[i] = sn
+                self.result[i] = self.find_cn(i)
+        return self.result
 
+    def find_cn(self, num):
+        if num == 0 or self.result[num] != 0:
+            return self.result[num]
+        self.result[num] = 1 + self.find_cn(num - self.cn[num])
+        return self.result[num]
 
 if __name__ == '__main__':
-    nums = [0,0]
-    Solution().sortColors(nums)
+    nums = 4
+    Solution().countBits(4)
