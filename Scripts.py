@@ -1,43 +1,57 @@
 # coding:utf-8
 
 class Solution(object):
-    def findRightInterval(self, intervals):
+    def fourSum(self, nums, target):
         """
-        :type intervals: List[List[int]]
-        :rtype: List[int]
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[List[int]]
         """
-        left_table = dict()
-        i = 0
-        for interval in intervals:
-            left_table[interval[0]] = i
-            i += 1
-        left_values = left_table.keys()
-        left_values.sort()
-        result = [-1 for _ in range(len(left_values))]
-        i = -1
-        for interval in intervals:
-            i += 1
-            if left_table.has_key(interval[1]):
-                result[i] = left_table[interval[1]]
+        nums.sort()
+        nums_table = dict()
+        sum_2_table = dict()
+        for num in nums:
+            if num not in nums_table:
+                nums_table[num] = 0
+            nums_table[num] += 1
+        a = 0
+        while a < len(nums) - 1:
+            while a > 1 and a < len(nums) - 1 and nums[a] == nums[a-1]:
+                a += 1
+            if a == len(nums) -1:
                 continue
-            if left_values[-1] < interval[1]:
+            b = a + 1
+            while b < len(nums):
+                while b > a + 1 and b < len(nums) and nums[b] == nums[b-1]:
+                    b += 1
+                if b == len(nums):
+                    continue
+                s_t = nums[a] + nums[b]
+                if s_t not in sum_2_table:
+                    sum_2_table[s_t] = []
+                sum_2_table[s_t] .append([nums[a], nums[b]])
+                b += 1
+            a += 1
+        result = set()
+        sum_2 = sum_2_table.keys()
+        sum_2.sort()
+        for k in sum_2:
+            if target-k < k:
+                break
+            if (target - k) not in sum_2_table:
                 continue
-            else:
-                left = 0
-                right = len(left_values) - 1
-                while left <= right:
-                    mid = left + (right - left) / 2
-                    if interval[1] < left_values[mid]:
-                        right = mid -1
+            for x in sum_2_table[k]:
+                for y in sum_2_table[target-k]:
+                    ret = x + y
+                    if any(nums_table[i] < ret.count(i) for i in ret):
+                        continue
                     else:
-                        left = mid + 1
-                if left_values[right] > interval[1]:
-                    result[i] = left_table[left_values[right]]
-                else:
-                    result[i] = left_table[left_values[left]]
-        return result
+                        ret.sort()
+                        result.add(tuple(ret))
+        return list(list(r) for r in result)
 
 if __name__ == '__main__':
-    matrix = [[4,5],[2,3],[1,2]]
-    target = 13
-    print Solution().findRightInterval(matrix)
+    nums = [0,0,0,0]
+    target = 0
+    print Solution().fourSum(nums, target)
+
