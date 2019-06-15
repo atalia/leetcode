@@ -1,42 +1,24 @@
 # coding:utf-8
 
-class TreeNode(object):
-    def __init__(self, x):
-        self.val = x
-        self.left = None
-        self.right = None
-
-
 class Solution(object):
-    def rightSideView(self, root):
+    def rob(self, nums):
         """
-        :type root: TreeNode
-        :rtype: List[int]
+        :type nums: List[int]
+        :rtype: int
         """
-        if root is None:
-            return []
-        queue = [root]
-        cur_lay_cnt = 1
-        result = []
-        while queue:
-            result.append(queue[-1].val)
-            lay_cnt = 0
-            while cur_lay_cnt:
-                r = queue.pop(0)
-                if r.left is not None:
-                    lay_cnt += 1
-                    queue.append(r.left)
-                if r.right is not None:
-                    lay_cnt += 1
-                    queue.append(r.right)
-                cur_lay_cnt -= 1
-            cur_lay_cnt = lay_cnt
-        return result
+        if not nums:
+            return 0
+        return max(self._rob(nums[1:]), self._rob(nums[0:-1]))
+
+    def _rob(self, nums):
+        if len(nums) == 1:
+            return nums[0]
+        dp = [0 for _ in range(len(nums) + 1)]
+        dp[1] = nums[1]
+        for i in range(1, len(nums) + 1):
+            dp[i] = max(dp[i - 2] + nums[i - 1], dp[i - 1])
+        return dp[-1]
 
 if __name__ == '__main__':
-    root = TreeNode(1)
-    root.left = TreeNode(2)
-    root.right = TreeNode(3)
-    root.left.right = TreeNode(5)
-    root.right.right = TreeNode(4)
-    print Solution().rightSideView(root)
+    nums = [2]
+    print Solution().rob(nums)
