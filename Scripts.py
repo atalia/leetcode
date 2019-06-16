@@ -1,39 +1,60 @@
 # coding:utf-8
 
 
-class TreeNode(object):
-    def __init__(self, x):
-        self.val = x
-        self.left = None
-        self.right = None
-
-
 class Solution(object):
-    def buildTree(self, inorder, postorder):
+    def solve(self, board):
         """
-        :type inorder: List[int]
-        :type postorder: List[int]
-        :rtype: TreeNode
+        :type board: List[List[str]]
+        :rtype: None Do not return anything, modify board in-place instead.
         """
-        if not inorder:
-            return None
-        root = postorder[-1]
-        pos = inorder.index(root)
-        root = TreeNode(root)
-        root.left = self.buildTree(inorder[0:pos], postorder[0:pos])
-        root.right = self.buildTree(inorder[pos+1:], postorder[pos:-1])
-        return root
+        self.board = board
+        self.row = len(board)
+        if not self.row:
+            return self.board
+        self.col = len(board[0])
+        self.visited = [[0 for i in range(self.col)] for j in range(self.row)]
+        for c in range(self.col):
+            self.dfs(0, c)
+            self.dfs(self.row - 1, c)
+        for r in range(self.row):
+            self.dfs(r, 0)
+            self.dfs(r, self.col-1)
+        self.modify('O', 'X')
+        self.modify('#', 'O')
+        return self.board
+
+    def dfs(self, i, j):
+        if self.visited[i][j]:
+            return
+        self.visited[i][j] = 1
+        if self.board[i][j] != 'O':
+            return
+        self.board[i][j] = '#'
+        step = ((0, 1), (0, -1), (1, 0), (-1, 0))
+        for x, y in step:
+            if 0 <= i+x < self.row and 0 <= j+y < self.col:
+                self.dfs(i+x, j+y)
 
 
-def print_tree(root):
-    if not root:
-        return
-    print root.val
-    print_tree(root.left)
-    print_tree(root.right)
+
+    def modify(self, source_chr, target_chr):
+        for i in range(self.row):
+            for j in range(self.col):
+                if self.board[i][j] == source_chr:
+                    self.board[i][j] = target_chr
+
+
 
 if __name__ == '__main__':
-    inorder = [9, 3, 15, 20, 7]
-    postorder = [9, 15, 7, 20, 3]
-    root = Solution().buildTree(inorder, postorder)
-    print_tree(root)
+    board = [["O", "X", "O", "O", "O", "O", "O", "O", "O"],
+             ["O", "O", "O", "X", "O", "O", "O", "O", "X"],
+             ["O", "X", "O", "X", "O", "O", "O", "O", "X"],
+             ["O", "O", "O", "O", "X", "O", "O", "O", "O"],
+             ["X", "O", "O", "O", "O", "O", "O", "O", "X"],
+             ["X", "X", "O", "O", "X", "O", "X", "O", "X"],
+             ["O", "O", "O", "X", "O", "O", "O", "O", "O"],
+             ["O", "O", "O", "X", "O", "O", "O", "O", "O"],
+             ["O", "O", "O", "O", "O", "X", "X", "O", "O"]]
+    matrix =  Solution().solve(board)
+    for m in matrix:
+        print m
