@@ -2,22 +2,46 @@
 
 
 class Solution(object):
-    def maxArea(self, height):
+    def searchRange(self, nums, target):
         """
-        :type height: List[int]
-        :rtype: int
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
         """
-        left = 0
-        right = len(height) - 1
-        vol = min(height[left], height[right]) * (right -left)
-        while left < right:
-            if height[left] < height[right]:
-                left += 1
+        if not nums:
+            return [-1, -1]
+        start = 0
+        end = len(nums) - 1
+        mid =(start + end)/ 2
+        result = [-1, -1]
+        while start <= end:
+            mid = (start + end)/2
+            if nums[mid] > target:
+                end = mid - 1
+            elif nums[mid] < target:
+                start = mid + 1
+            elif mid != 0 and nums[mid - 1] != target:
+                break
             else:
-                right -= 1
-            vol = max(vol, min(height[left], height[right]) * (right -left))
-        return vol
+                end = mid - 1
+        result[0] = mid if nums[mid] == target else -1
+        if result[0] == -1:
+            return result
+        end = len(nums) - 1
+
+        while start <= end:
+            mid = (start + end)/2
+            if nums[mid] > target:
+                end = mid - 1
+            elif nums[mid] < target:
+                start = mid + 1
+            elif mid + 1 <= len(nums) - 1 and nums[mid + 1] != target:
+                break
+            else:
+                start = mid + 1
+        result[1] = mid
+        return result
 
 
 if __name__ == "__main__":
-    print Solution().maxArea([1,8,6,2,5,4,8,3,7])
+    print Solution().searchRange([1,2,3], 2)
