@@ -2,46 +2,38 @@
 
 
 class Solution(object):
-    def searchRange(self, nums, target):
+    def rotate(self, matrix):
         """
-        :type nums: List[int]
-        :type target: int
-        :rtype: List[int]
+        :type matrix: List[List[int]]
+        :rtype: None Do not return anything, modify matrix in-place instead.
         """
-        if not nums:
-            return [-1, -1]
-        start = 0
-        end = len(nums) - 1
-        mid =(start + end)/ 2
-        result = [-1, -1]
-        while start <= end:
-            mid = (start + end)/2
-            if nums[mid] > target:
-                end = mid - 1
-            elif nums[mid] < target:
-                start = mid + 1
-            elif mid != 0 and nums[mid - 1] != target:
-                break
-            else:
-                end = mid - 1
-        result[0] = mid if nums[mid] == target else -1
-        if result[0] == -1:
-            return result
-        end = len(nums) - 1
-
-        while start <= end:
-            mid = (start + end)/2
-            if nums[mid] > target:
-                end = mid - 1
-            elif nums[mid] < target:
-                start = mid + 1
-            elif mid + 1 <= len(nums) - 1 and nums[mid + 1] != target:
-                break
-            else:
-                start = mid + 1
-        result[1] = mid
-        return result
+        row = len(matrix) - 1
+        for r in range(row/2 + 1):
+            col = row - r
+            for c in range(r, col):
+                #A (r, c) -> B(c, row - r)
+                matrix[r][c] , matrix[c][row - r] = matrix[c][row - r], matrix[r][c]
+                #C (row - r, row - c) -> D(row -c, r)
+                matrix[row - r][row -c] , matrix[row - c][r] = matrix[row -c][r], matrix[row - r][row - c]
+                #A (r, c) -> C(row -r, row -c)
+                matrix[r][c] , matrix[row-r][row - c] = matrix[row -r ][row - c], matrix[r][c]
+        return matrix
 
 
 if __name__ == "__main__":
-    print Solution().searchRange([1,2,3], 2)
+    # matrix = [
+    #     [1,2],
+    #     [3,4]
+    # ]
+    # matrix = [
+    #     [1, 2, 3],
+    #     [4, 5, 6],
+    #     [7, 8, 9]
+    # ]
+    matrix = [
+        [ 5, 1, 9,11],
+        [ 2, 4, 8,10],
+        [13, 3, 6, 7],
+        [15,14,12,16]
+        ]
+    print Solution().rotate(matrix)
