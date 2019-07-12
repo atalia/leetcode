@@ -8,24 +8,26 @@ class TreeNode(object):
 
 
 class Solution(object):
-    def inorderTraversal(self, root):
+    def isValidBST(self, root):
         """
         :type root: TreeNode
-        :rtype: List[int]
+        :rtype: bool
         """
-        stack  = []
-        nodes = []
-        while root or stack:
-            while root:
-                stack.append(root)
-                root = root.left
-            root = stack.pop()
-            nodes.append(root.val)
-            root = root.right
-        return nodes
+        import sys
+        return self._isValidBST(root, - sys.maxint + 1, sys.maxint)
+
+    def _isValidBST(self, root ,min_val, max_val):
+        if not root:
+            return True
+        if not min_val < root.val < max_val:
+            return False
+        return self._isValidBST(root.left, min_val, root.val) and self._isValidBST(root.right, root.val, max_val)
 
 if __name__ == '__main__':
-    root = TreeNode(1)
-    root.right = TreeNode(2)
+    root = TreeNode(5)
+    root.left = TreeNode(1)
+    root.right = TreeNode(7)
+    root.right = TreeNode(6)
     root.right.left = TreeNode(3)
-    print Solution().inorderTraversal(root)
+    root.right.right = TreeNode(7)
+    print Solution().isValidBST(root)
