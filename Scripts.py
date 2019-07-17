@@ -8,26 +8,32 @@ class TreeNode(object):
 
 
 class Solution(object):
-    def generateParenthesis(self, n):
+    def merge(self, intervals):
         """
-        :type n: int
-        :rtype: List[str]
+        :type intervals: List[List[int]]
+        :rtype: List[List[int]]
         """
-        if n == 0:
-            return []
-        l = n
-        r = 0
-        self.result  = []
-        self._addParenteses('(', l-1, r+1)
-        return self.result
+        if not intervals or not intervals[0]:
+            return intervals
+        #intervals.sort(cmp=lambda x,y: -1 if x[0] < y[0] or x[0] == y[0] and x[1] < y[1] else 0)
+        intervals.sort()
+        now = intervals[0]
+        result = []
+        print intervals
+        for interval in intervals:
+            if interval[0] <= now[1]:
+                if interval[1] <= now[1]:
+                    continue
+                else:
+                    now[1] = interval[1]
+            else:
+                result.append(now)
+                now = interval
+        result.append(now)
+        return result
 
-    def _addParenteses(self, parenteses, l, r):
-        if not l and not r:
-            self.result.append(parenteses)
-        if l:
-            self._addParenteses(parenteses+'(', l-1, r+1)
-        if r:
-            self._addParenteses(parenteses+')', l , r-1)
 
 if __name__ == '__main__':
-    print Solution().generateParenthesis(3)
+    intervals = [[1,4],[5,8],[8,9]]
+    #intervals = [[1,3],[2,6],[8,10],[15,18]]
+    print Solution().merge(intervals)
