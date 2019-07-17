@@ -8,31 +8,26 @@ class TreeNode(object):
 
 
 class Solution(object):
-    def nextPermutation(self, nums):
+    def generateParenthesis(self, n):
         """
-        :type nums: List[int]
-        :rtype: None Do not return anything, modify nums in-place instead.
+        :type n: int
+        :rtype: List[str]
         """
-        i = len(nums) - 1
-        while i > 0 and nums[i] <= nums[i - 1]:
-            i -= 1
-        if i == 0:
-            nums.reverse()
-            return nums
-        j = i - 1
-        while i < len(nums) - 1 and nums[i + 1] > nums[j]:
-            i += 1
-        nums[i], nums[j] = nums[j], nums[i]
-        j += 1
-        i = len(nums) - 1
-        while j < i:
-            nums[i], nums[j] = nums[j], nums[i]
-            i -= 1
-            j += 1
-        return nums
+        if n == 0:
+            return []
+        l = n
+        r = 0
+        self.result  = []
+        self._addParenteses('(', l-1, r+1)
+        return self.result
 
+    def _addParenteses(self, parenteses, l, r):
+        if not l and not r:
+            self.result.append(parenteses)
+        if l:
+            self._addParenteses(parenteses+'(', l-1, r+1)
+        if r:
+            self._addParenteses(parenteses+')', l , r-1)
 
 if __name__ == '__main__':
-    nums = [[1,3,2],[1],[1,1,2],[1,2,3],[3,2,1],[1,1]]
-    for num in nums:
-        print Solution().nextPermutation(num)
+    print Solution().generateParenthesis(3)
