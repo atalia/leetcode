@@ -30,3 +30,38 @@
 * ### 78 bit-manipulation 解法有点意思
 
 * ### 94 https://en.wikipedia.org/wiki/Threaded_binary_tree
+整理下thread_binary_tree构造流程
+
+thread_binary_tree 可以实现空间复杂度1 对二叉树中序遍历
+
+1. 如果root为空,退出
+2. 如果root不存在左节点，输出节点，同时root=root.right,回到1
+3. 如果root存在左节点，那么找出root.left的最右子节点
+- 存在最右子节点（不存在环），将root.left的最右子节点（可以是root.left 的右子节点）指向root,然后root = root.left, 回到1
+- 不存在最右子节点（存在环，寻找最右子节点经过了root），输出root节点，将指向root节点右节点置空，同时root = root.right，回到1
+
+ ```python
+ def inorderTraversal(TreeNode root)
+    # 1
+    if not root:
+        return []
+    cur = root
+    nodes = []
+    while cur:
+        # 2
+        if not cur.left:
+            nodes.append(cur.val)
+            cur = cur.right
+        pre = cur.left:
+        while pre.right and pre.right is not cur:
+            pre = pre.right
+        #  3
+        if not pre.right:
+            pre.right = cur
+            cur = cur.left
+        else:
+            pre.right = None
+            nodes.append(cur.val)
+            cur = cur.right
+ ```
+
