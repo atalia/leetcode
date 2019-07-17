@@ -8,26 +8,31 @@ class TreeNode(object):
 
 
 class Solution(object):
-    def isValidBST(self, root):
+    def nextPermutation(self, nums):
         """
-        :type root: TreeNode
-        :rtype: bool
+        :type nums: List[int]
+        :rtype: None Do not return anything, modify nums in-place instead.
         """
-        import sys
-        return self._isValidBST(root, - sys.maxint + 1, sys.maxint)
+        i = len(nums) - 1
+        while i > 0 and nums[i] <= nums[i - 1]:
+            i -= 1
+        if i == 0:
+            nums.reverse()
+            return nums
+        j = i - 1
+        while i < len(nums) - 1 and nums[i + 1] > nums[j]:
+            i += 1
+        nums[i], nums[j] = nums[j], nums[i]
+        j += 1
+        i = len(nums) - 1
+        while j < i:
+            nums[i], nums[j] = nums[j], nums[i]
+            i -= 1
+            j += 1
+        return nums
 
-    def _isValidBST(self, root ,min_val, max_val):
-        if not root:
-            return True
-        if not min_val < root.val < max_val:
-            return False
-        return self._isValidBST(root.left, min_val, root.val) and self._isValidBST(root.right, root.val, max_val)
 
 if __name__ == '__main__':
-    root = TreeNode(5)
-    root.left = TreeNode(1)
-    root.right = TreeNode(7)
-    root.right = TreeNode(6)
-    root.right.left = TreeNode(3)
-    root.right.right = TreeNode(7)
-    print Solution().isValidBST(root)
+    nums = [[1,3,2],[1],[1,1,2],[1,2,3],[3,2,1],[1,1]]
+    for num in nums:
+        print Solution().nextPermutation(num)
