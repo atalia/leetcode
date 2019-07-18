@@ -8,32 +8,25 @@ class TreeNode(object):
 
 
 class Solution(object):
-    def merge(self, intervals):
+    def dailyTemperatures(self, T):
         """
-        :type intervals: List[List[int]]
-        :rtype: List[List[int]]
+        :type T: List[int]
+        :rtype: List[int]
         """
-        if not intervals or not intervals[0]:
-            return intervals
-        #intervals.sort(cmp=lambda x,y: -1 if x[0] < y[0] or x[0] == y[0] and x[1] < y[1] else 0)
-        intervals.sort()
-        now = intervals[0]
-        result = []
-        print intervals
-        for interval in intervals:
-            if interval[0] <= now[1]:
-                if interval[1] <= now[1]:
-                    continue
-                else:
-                    now[1] = interval[1]
-            else:
-                result.append(now)
-                now = interval
-        result.append(now)
+        stack = []
+        n = len(T)
+        result = [0 for _ in range(n)]
+        for i in xrange(n):
+            while stack and T[i] > T[stack[-1]]:
+                t = stack.pop()
+                result[t] = i - t
+            stack.append(i)
         return result
 
 
+
+
 if __name__ == '__main__':
-    intervals = [[1,4],[5,8],[8,9]]
+    T = [73, 74, 75, 71, 69, 72, 76, 73]
     #intervals = [[1,3],[2,6],[8,10],[15,18]]
-    print Solution().merge(intervals)
+    print Solution().dailyTemperatures(T)
