@@ -12,23 +12,20 @@ class Solution(object):
         """
         self.candidates = [x for x in candidates if x <= target]
         self.candidates.sort()
-        idx = 0
-        self.result = set()
+        self.result = []
         self.combination(0, target, [])
         return list(self.result)
 
     def combination(self, i, target, elements):
-        if target == 0:
-            self.result.add(elements)
+        if target == 0 and elements not in self.result:
+            self.result.append(elements)
             return
-        if i == len(self.candidates):
+        if i == len(self.candidates) or target < self.candidates[i]:
             return
-        if target < 0:
-            return 
-        self.combination(i+1 , target, elements)
-        self.combination(i+1 , target - self.candidates[i], elements.append(self.candidates[i]))
+        _elements = elements[:]
+        self.combination(i+1, target, _elements)
+        _elements = elements[:]
+        _elements.append(self.candidates[i])
+        self.combination(i+1, target - self.candidates[i], _elements)
 
-candidates = [10,1,2,7,6,1,5] 
-target = 8
 
-Solution().combinationSum2(candidates, target)

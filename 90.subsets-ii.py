@@ -11,18 +11,23 @@ class Solution(object):
         :type nums: List[int]
         :rtype: List[List[int]]
         """
-        res = ()
+        res = [[]]
+        nums.sort()
         self._subset(nums, res)
-        return res
+        return list(res)
 
     def _subset(self, nums, res):
         if not nums:
             return
         # not add this num
-        self._subset(nums[1:], res)
         # add this num
-        for r in res:
-            res.add( r.append(nums[0]))
+        for r in res[:]:
+            t = r[:]
+            t.append(nums[0])
+            if t not in res:
+                res.append(t)
         self._subset(nums[1:], res)
+
 # @lc code=end
 
+#print Solution().subsetsWithDup([2,1,2])

@@ -15,26 +15,26 @@ class Solution(object):
         intervals.append(newInterval)
         intervals.sort()
         idx = 1
-        start ,end = intervals[0]
+        start, end = intervals[0]
         res = []
         while idx < len(intervals):
-            print start, end
-            print intervals[idx]
             if intervals[idx][0] > end:
                 res.append([start, end])
                 start, end = intervals[idx]
             else:
-                end = intervals[idx][1]
+                end = max(end, intervals[idx][1])
             idx += 1
+        if not res:
+            res.append([start, end])
         if res[-1][1] >= start:
             res[-1][1] = end
         else:
-            res.append(intervals[-1])
+            res.append([start, end])
         return res
 
 
-intervals = [[1,2],[3,5],[6,7],[8,10],[12,16]]
-newInterval = [4,8]
-print Solution().insert(intervals, newInterval)
+# intervals = [[5,6]]
+# newInterval =  [4,8]
+# print Solution().insert(intervals, newInterval)
 # @lc code=end
 
