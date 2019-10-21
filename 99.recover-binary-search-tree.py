@@ -18,6 +18,26 @@ class Solution(object):
         :type root: TreeNode
         :rtype: None Do not return anything, modify root in-place instead.
         """
+        self.pre = None
+        self.first = None
+        self.second = None
+        self.inOrder(root)
+        self.first.val , self.second.val = self.second.val, self.first.val
+
+    def inOrder(self, root):
+        if not root:
+            return
+        self.inOrder(root.left)
+        if self.pre and self.pre.val > root.val:
+            if not self.first:
+                self.first = self.pre
+            self.second = root
+        self.pre = root
+        self.inOrder(root.right)
         
+
+    
+
 # @lc code=end
+
 

@@ -19,26 +19,29 @@ class Solution(object):
         :rtype: List[List[int]]
         """
         if not root:
-            return
+            return []
         queue = [root]
-        last_node = 1
+        cur_node = 1
         result = []
+        reverse = False
         while queue:
-            cur_node = 0
             next_node = 0
             layer = []
-            while cur_node < last_node:
+            while cur_node:
                 node = queue[0]
                 layer.append(node.val)
-                queue.pop()
-                cur_node += 1
+                queue.pop(0)
+                cur_node -= 1
                 if node.left:
                     queue.append(node.left)
                     next_node += 1
                 if node.right:
                     queue.append(node.right)
                     next_node += 1
-            last_node = next_node
+            cur_node = next_node
+            if reverse:
+                layer.reverse()
+            reverse = not reverse
             result.append(layer)
         return result
 # @lc code=end

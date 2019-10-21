@@ -24,17 +24,21 @@ class Solution(object):
         while pre.next:
             if pre.next.val >= x:
                 break
+            pre = pre.next
         x_node = pre.next
         cur = pre
-        while cur.next:
-            if cur.next.val < x:
+        while cur:
+            if cur.next and cur.next.val < x:
+                tmp = cur.next
                 cur.next = cur.next.next
-                cur.next = x_node
-                pre.next = cur.next
+                tmp.next = x_node
+                pre.next = tmp
                 pre = pre.next
             else:
                 cur = cur.next
         return dummy.next
 
 # @lc code=end
+
+
 
