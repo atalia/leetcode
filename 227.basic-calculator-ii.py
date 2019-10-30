@@ -25,7 +25,10 @@ class Solution(object):
                     num_stack.append(x * num)
                 elif op == '/':
                     x = num_stack.pop()
-                    num_stack.append(x / num)
+                    if x < 0:
+                        num_stack.append(-((-x) / num))
+                    else:
+                        num_stack.append(x / num)
                 elif op == '-':
                     num_stack.append(-1 * num)
                 else:
@@ -47,6 +50,6 @@ class Solution(object):
             else:
                 num_stack.append(num)
         return sum(num_stack)
-                
+
 # @lc code=end
 
