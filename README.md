@@ -1,4 +1,9 @@
 # leetcode  
+
+## Thanks
+
+[![logo](https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/PyCharm_Logo.svg/220px-PyCharm_Logo.svg.png)](https://www.jetbrains.com/?from=leetcode)
+
 ## 好好学习，天天向上  
 * ### 687 关于递归的好题目  
 * ### 206 链表反转的两种实现方式  
